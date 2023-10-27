@@ -90,4 +90,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: oxygen:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/oxygen:latest
