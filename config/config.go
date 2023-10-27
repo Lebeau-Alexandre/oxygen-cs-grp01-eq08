@@ -30,7 +30,7 @@ var oxygenConfig OxygenConfig
 
 func InitConfig() {
 	if err := godotenv.Load(); err != nil {
-		log.Fatal("Error loading .env file")
+		log.Fatalf("Error loading .env file – %s", err)
 	}
 
 	postgresConfig = PostgresConfig{
@@ -47,17 +47,18 @@ func InitConfig() {
 	}
 
 	postgresConfig.Context = ctx
+
 	oxygenConfig = OxygenConfig{
 		Host:  os.Getenv("OXYGEN_HOST"),
 		Token: os.Getenv("OXYGEN_TOKEN"),
 	}
 	oxygenConfig.TMax, err = strconv.ParseFloat(os.Getenv("OXYGEN_TMAX"), 64)
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		log.Fatalf("Error loading .env tmax – %s", err)
 	}
 	oxygenConfig.TMin, err = strconv.ParseFloat(os.Getenv("OXYGEN_TMIN"), 64)
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		log.Fatalf("Error loading .env tmin – %s", err)
 	}
 }
 
