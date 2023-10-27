@@ -33,11 +33,13 @@ func (m *SrConfig) takeAction(temperature float64) {
 	var err error
 	if temperature >= m.TMax {
 		err = m.sendActionToHVAC("TurnOnAc")
+		saveEventToDB("event", -1)
 	} else if temperature <= m.TMin {
 		err = m.sendActionToHVAC("TurnOnHeater")
+		saveEventToDB("event", 1)
 	}
 	if err != nil {
-		log.Printf(err.Error())
+		log.Print(err.Error())
 	}
 }
 

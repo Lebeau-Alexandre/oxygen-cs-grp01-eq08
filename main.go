@@ -48,7 +48,10 @@ func main() {
 func (m *SrConfig) setSensorHub() {
 	route := fmt.Sprintf("%s/SensorHub?token=%s", m.Host, m.Token)
 	m.receiver = receiver{}
-	creationCtx, _ := context.WithTimeout(context.TODO(), 2*time.Second)
+	creationCtx, err := context.WithTimeout(context.TODO(), 2*time.Second)
+	if err != nil {
+		log.Fatal("NewHTTPConnection:", err)
+	}
 	conn, err := signalr.NewHTTPConnection(creationCtx, route)
 	if err != nil {
 		log.Fatal("NewHTTPConnection:", err)

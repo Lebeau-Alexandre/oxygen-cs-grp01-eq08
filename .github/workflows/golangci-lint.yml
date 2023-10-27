@@ -23,7 +23,7 @@ jobs:
           cache: false
       - name: golangci-test
         run: go test ./tests
-        
+
   lint:
     name: lint
     runs-on: ubuntu-latest
