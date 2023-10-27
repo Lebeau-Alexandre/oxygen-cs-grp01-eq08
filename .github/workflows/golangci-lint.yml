@@ -83,10 +83,10 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker image
-        run: docker build -t log680-oxygen-eq08 .
+        run: docker build -t oxygen-eq08 .
 
       - name: Tag Docker image
-        run: docker tag log680-oxygen-eq08:latest  log680-oxygen-eq08:latest
+        run: docker tag oxygen-eq08:latest  oxygen-eq08:latest
 
       - name: Push Docker image to Docker Hub
-        run: docker push log680-oxygen-eq08:latest
+        run: docker push oxygen-eq08:latest
