@@ -52,19 +52,14 @@ func (m *SrConfig) setSensorHub() {
 	if err != nil {
 		log.Fatal("NewHTTPConnection:", err)
 	}
-	conn, err := signalr.NewHTTPConnection(creationCtx, route)
-	if err != nil {
-		log.Fatal("NewHTTPConnection:", err)
-	}
 
-	m.client, err = signalr.NewClient(
+	conn, _ := signalr.NewHTTPConnection(creationCtx, route)
+	m.client, _ = signalr.NewClient(
 		context.TODO(),
 		signalr.WithConnection(conn),
 		signalr.WithReceiver(&m.receiver),
 	)
-	if err != nil {
-		log.Fatal("ListenAndServe:", err)
-	}
+
 	// Start the client loop
 	m.client.Start()
 }
