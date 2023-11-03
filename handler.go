@@ -32,19 +32,13 @@ func (c *receiver) ReceiveSensorData(msg models.SensorData) error {
 func (m *SrConfig) takeAction(temperature float64) {
 	var err error
 	if temperature >= m.TMax {
-		err = m.sendActionToHVAC("TurnOnAc")
-		if err != nil {
-			log.Print(err.Error())
-			return
+		if err = m.sendActionToHVAC("TurnOnAc"); err == nil {
+			err = saveEventToDB(-1)
 		}
-		err = saveEventToDB("event", -1)
 	} else if temperature <= m.TMin {
-		err = m.sendActionToHVAC("TurnOnHeater")
-		if err != nil {
-			log.Print(err.Error())
-			return
+		if err = m.sendActionToHVAC("TurnOnHeater"); err == nil {
+			err = saveEventToDB(1)
 		}
-		err = saveEventToDB("event", 1)
 	}
 	if err != nil {
 		log.Print(err.Error())
@@ -72,7 +66,7 @@ func (m *SrConfig) sendActionToHVAC(action string) error {
 	return nil
 }
 
-func saveEventToDB(table string, eventType int) error {
+func saveEventToDB(eventType int) error {
 	db := config.GetPostgresConfig().Context
 
 	var id int

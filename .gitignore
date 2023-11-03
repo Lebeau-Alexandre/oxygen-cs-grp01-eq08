@@ -2,7 +2,7 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=go,goland,dotenv
 
 ### dotenv ###
-.env
+/.env
 
 ### JetBrain ###
 .idea/
