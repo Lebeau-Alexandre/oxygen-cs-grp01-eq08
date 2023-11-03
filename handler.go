@@ -32,11 +32,11 @@ func (c *receiver) ReceiveSensorData(msg models.SensorData) error {
 func (m *SrConfig) takeAction(temperature float64) {
 	var err error
 	if temperature >= m.TMax {
-		if err := m.sendActionToHVAC("TurnOnAc"); err == nil {
+		if err = m.sendActionToHVAC("TurnOnAc"); err == nil {
 			err = saveEventToDB(-1)
 		}
 	} else if temperature <= m.TMin {
-		if err := m.sendActionToHVAC("TurnOnHeater"); err == nil {
+		if err = m.sendActionToHVAC("TurnOnHeater"); err == nil {
 			err = saveEventToDB(1)
 		}
 	}
