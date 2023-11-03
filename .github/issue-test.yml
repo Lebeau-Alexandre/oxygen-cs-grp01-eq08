@@ -1,0 +1,31 @@
+name: Close Issue on Status Change
+
+on:
+  project_card:
+    types:
+      - moved
+
+jobs:
+  closeIssue:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check if the card is in "Terminée" column
+        run: |
+          echo "Card ID: ${{ github.event.project_card.id }}"
+          echo "New Column: ${{ github.event.project_card.column_name }}"
+          if [ "${{ github.event.project_card.column_name }}" = "Terminée" ]; then
+            echo "The card is in the 'Terminée' column."
+          else
+            echo "The card is not in the 'Terminée' column. Exiting."
+            exit 0
+          fi
+        id: check_card
+
+      - name: Close Issue
+        if: steps.check_card.outputs.check_card == 'The card is in the ''Terminée'' column.'
+        run: |
+          echo "Closing issue: ${{ github.event.project_card.content_url }}"
+          ISSUE_URL=$(echo "${{ github.event.project_card.content_url }}" | sed 's/api.github.com/repos/github.com/')
+          echo "Full Issue URL: $ISSUE_URL"
+          curl -X PATCH -H "Authorization: token ${{ secrets.PAT }}" -d '{"state": "closed"}' "$ISSUE_URL"
