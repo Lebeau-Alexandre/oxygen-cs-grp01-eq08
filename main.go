@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"github.com/Lebeau-Alexandre/oxygen-cs-grp01-eq08/config"
 	"github.com/philippseith/signalr"
-	"log"
-	"time"
 )
 
 type SrConfig struct {
@@ -21,7 +19,7 @@ type receiver struct {
 type HVACResponse struct {
 	// Define the structure of the response JSON here
 	// For example, assuming the response has a field named "Result"
-	Result string `json:"Result"`
+	Result string `json:"Response"`
 	// Add more fields as needed
 }
 
@@ -48,12 +46,8 @@ func main() {
 func (m *SrConfig) setSensorHub() {
 	route := fmt.Sprintf("%s/SensorHub?token=%s", m.Host, m.Token)
 	m.receiver = receiver{}
-	creationCtx, err := context.WithTimeout(context.TODO(), 2*time.Second)
-	if err != nil {
-		log.Fatal("NewHTTPConnection:", err)
-	}
 
-	conn, _ := signalr.NewHTTPConnection(creationCtx, route)
+	conn, _ := signalr.NewHTTPConnection(context.TODO(), route)
 	m.client, _ = signalr.NewClient(
 		context.TODO(),
 		signalr.WithConnection(conn),
