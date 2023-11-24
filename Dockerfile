@@ -25,7 +25,7 @@ RUN --mount=type=cache,target=/go/pkg/mod/ \
 # source code into the container.
 RUN --mount=type=cache,target=/go/pkg/mod/ \
     --mount=type=bind,target=. \
-    CGO_ENABLED=0 go build -o /bin/server .
+    CGO_ENABLED=0 go build -ldflags "-s -w" -o /bin/server .
 
 ################################################################################
 # Create a new stage for running the application that contains the minimal
@@ -64,9 +64,11 @@ USER appuser
 
 # Copy the executable from the "build" stage.
 COPY --from=build /bin/server /bin/
+COPY .env.docker .env
+
 
 # Expose the port that the application listens on.
-EXPOSE 8080
+EXPOSE 8082
 
 # What the container should run when it is started.
 ENTRYPOINT [ "/bin/server" ]
